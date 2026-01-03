@@ -1,0 +1,16 @@
+version: "2"
+
+run:
+  timeout: 2m
+
+linters:
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unconvert
+    - unparam
+
+issues:
+  exclude-use-default: false
