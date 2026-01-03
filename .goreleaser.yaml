@@ -32,7 +32,7 @@ checksum:
 
 brews:
   - name: dbrest
-    folder: Formula
+    directory: Formula
     repository:
       owner: timkrase
       name: homebrew-tap
