@@ -2,6 +2,13 @@
 
 Query Deutsche Bahn transport data from `v6.db.transport.rest`.
 
+## Install
+
+```
+brew tap timkrase/tap
+brew install dbrest
+```
+
 ## CLI spec (create-cli)
 
 1. **Name**: `dbrest`
