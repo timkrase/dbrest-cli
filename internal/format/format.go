@@ -83,6 +83,12 @@ type Position struct {
 	Longitude *float64 `json:"longitude"`
 }
 
+type stopoversEnvelope struct {
+	Departures []Stopover `json:"departures"`
+	Arrivals   []Stopover `json:"arrivals"`
+	Stopovers  []Stopover `json:"stopovers"`
+}
+
 // LocationsPlain formats /locations responses into line-based text.
 func LocationsPlain(data []byte, withHeader bool) (string, error) {
 	var locations []Location
@@ -114,8 +120,8 @@ func LocationsPlain(data []byte, withHeader bool) (string, error) {
 
 // StopoversPlain formats departures/arrivals into line-based text.
 func StopoversPlain(data []byte, withHeader bool) (string, error) {
-	var stopovers []Stopover
-	if err := json.Unmarshal(data, &stopovers); err != nil {
+	stopovers, err := parseStopovers(data)
+	if err != nil {
 		return "", err
 	}
 	if len(stopovers) == 0 {
@@ -297,4 +303,25 @@ func locationName(loc *Location) string {
 		return loc.Name
 	}
 	return loc.ID
+}
+
+func parseStopovers(data []byte) ([]Stopover, error) {
+	var stopovers []Stopover
+	if err := json.Unmarshal(data, &stopovers); err == nil {
+		return stopovers, nil
+	} else {
+		var env stopoversEnvelope
+		if errEnv := json.Unmarshal(data, &env); errEnv == nil {
+			if env.Departures != nil {
+				return env.Departures, nil
+			}
+			if env.Arrivals != nil {
+				return env.Arrivals, nil
+			}
+			if env.Stopovers != nil {
+				return env.Stopovers, nil
+			}
+		}
+		return nil, err
+	}
 }

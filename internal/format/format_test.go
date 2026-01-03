@@ -27,3 +27,16 @@ func TestStopoversPlain(t *testing.T) {
 		t.Fatalf("unexpected output:\n%s", out)
 	}
 }
+
+func TestStopoversPlainEnvelope(t *testing.T) {
+	data := []byte(`{"departures":[{"when":"2024-01-01T12:00:00+01:00","line":{"name":"S1"},"direction":"Frohnau","platform":"1","delay":0,"cancelled":false}]}`)
+	out, err := StopoversPlain(data, true)
+	if err != nil {
+		t.Fatalf("StopoversPlain error: %v", err)
+	}
+	expected := "time\tline\tdirection\tplatform\tdelay\tstatus\n" +
+		"2024-01-01T12:00:00+01:00\tS1\tFrohnau\t1\t0m\t-\n"
+	if out != expected {
+		t.Fatalf("unexpected output:\n%s", out)
+	}
+}
