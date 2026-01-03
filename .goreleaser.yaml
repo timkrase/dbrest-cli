@@ -36,6 +36,7 @@ brews:
     repository:
       owner: timkrase
       name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     homepage: "https://github.com/timkrase/dbrest-cli"
     description: "Query Deutsche Bahn transport data from the DB transport REST API."
     install: |
